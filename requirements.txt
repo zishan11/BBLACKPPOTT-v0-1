@@ -1,0 +1,2 @@
+PyMySQL==0.8.0
+python_Levenshtein==0.12.0
