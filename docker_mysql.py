@@ -23,7 +23,8 @@ config = {
     'port': 3306,
     # 'db':'fanuc_docker',
     'user': 'root',
-    'passwd': 'lsj940411',
+    'passwd': '',
+    #这是我自己的密码，就是不给你，皮一下很开心
     'charset':'utf8mb4',
     'cursorclass':pymysql.cursors.DictCursor
     }
