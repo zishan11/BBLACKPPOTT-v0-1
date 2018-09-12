@@ -339,22 +339,66 @@ def tcplink(sock, addr):
     # print('Connection from %s:%s closed.'%addr)
 
 
-# 开启服务，8193端口
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# s.bind(('192.168.127.94', 8193))
-s.bind(('107.172.108.185', 8193))
-# 设置最大连接数
-s.listen(100)
-# s.setblocking(0)
-# s.setblocking(0)
-print('Waiting for connecting...')
-'''
-建立连接的server
-'''
+# # 开启服务，8193端口
+# s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# # s.bind(('192.168.127.94', 8193))
+# s.bind(('107.172.108.185', 8193))
+# # 设置最大连接数
+# s.listen(100)
+# # s.setblocking(0)
+# # s.setblocking(0)
+# print('Waiting for connecting...')
+# '''
+# 建立连接的server
+# '''
 
-while True:
-    sock, addr = s.accept()
-    #设置为非阻塞式
-    sock.setblocking(False)
-    t = threading.Thread(target=tcplink, args=(sock, addr))
-    t.start()
+# while True:
+#     sock, addr = s.accept()
+#     #设置为非阻塞式
+#     sock.setblocking(False)
+#     t = threading.Thread(target=tcplink, args=(sock, addr))
+#     t.start()
+def openFanuc(ip,port=8193):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # s.bind(('192.168.127.94', 8193))
+    s.bind((ip, port))
+    # 设置最大连接数
+    s.listen(100)
+    # s.setblocking(0)
+    # s.setblocking(0)
+    print('Waiting for connecting...')
+    '''
+    建立连接的server
+    '''
+
+    while True:
+        sock, addr = s.accept()
+        # 设置为非阻塞式
+        sock.setblocking(False)
+        t = threading.Thread(target=tcplink, args=(sock, addr))
+        t.start()
+    print("ok")
+    
+
+def get_host_ip():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(('8.8.8.8', 80))
+        ip = s.getsockname()[0]
+    finally:
+        s.close()
+
+    return ip
+
+if __name__ == "__main__":
+    ip_addr = get_host_ip()
+    if ip_addr == '':
+        # ip_port = sys.argv[1]
+        # else:
+        try:
+            ip_addr = sys.argv[1]
+            # ip_port = sys.argv[2]
+        except:
+            print("error, You have to input your ip address")
+    openFanuc(ip_addr)
+    # 开启服务，8193端口
